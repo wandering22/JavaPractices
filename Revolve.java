@@ -6,7 +6,7 @@ public class Revolve{
 		int[] b={0,0,0,0,0,0,0};
 		//int k=a.length-n-1;
 			if(n>a.length){
-			n=n-a.length;}
+			n=n%a.length;}
 			for(int j=n;j<a.length;j++){
 			
 				b[i]=a[j];
@@ -21,7 +21,7 @@ public class Revolve{
 	}
 	public static void main(String[] args){
 		int[] a={1,2,3,4,5,6,7};
-		int n=11;
+		int n=18;
 		int[] b=spin(a,n);
 		System.out.println(Arrays.toString(b));
 	}
