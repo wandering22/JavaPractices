@@ -1,0 +1,38 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class BookShelf {
+    private static final BookShelf instance = new BookShelf();
+    private BookShelf() {}
+
+    public static BookShelf getBookShelf() {
+        return instance;
+    }
+    List<Book> list = new ArrayList<>();
+    Book[] array = new Book[100];
+    int size;
+
+    public void add(Book book) {
+        array[size++] = book;
+    }
+
+    public Book[] getBooks() {
+        return Arrays.copyOf(array, size);
+    }
+    public void remove(String title) {
+        // 1. 找下标
+
+        int removeIndex = -1;
+        for (int i = 0; i < list.size(); i++) {
+            Book book = list.get(i);
+            if (book.title.equals(title)) {
+                removeIndex = i;
+                break;
+            }
+        }
+        if (removeIndex != -1) {
+            list.remove(removeIndex);
+        }
+    }
+}
