@@ -1,4 +1,4 @@
-public class BubbleSort {
+public class BubbleSort11 {
     /*
             冒泡排序：
             时间复杂度：O(n) ~ O(n^2)  最好：顺序 + 标记  最坏： 逆序
