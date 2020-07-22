@@ -1,70 +1,102 @@
-package com.peixinchen;
+package lliuyi.model;
 
-import javax.servlet.ServletException;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
+import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+/**
+ * 用户表
+ */
+@Getter
+@Setter
+@ToString
 public class User {
-    int id;
-    String username;
 
-    public User(int id, String username) {
+    private Integer id;
+
+    /**
+     * 用户账号
+     */
+    private String username;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 用户昵称
+     */
+    private String nickname;
+
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
         this.username = username;
     }
 
-
-    public static User insert(String username, String password) throws ServletException {
-        // 1. 永远不用在数据库中保存用户的明文密码
-        // 1. 首先把 password 进行 hash 处理（这里使用 sha256 算法)
-        password = encrypted(password);
-
-        // 2. 利用 JDBC 保存 MySQL
-        try (Connection connection = DB.getConnection()) {
-            String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-            try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                stmt.setString(1, username);
-                stmt.setString(2, password);
-
-                stmt.executeUpdate();
-                // 插入成功
-
-                // 3. id 是自增主键，所以，利用 JDBC 的方法取出 id
-                try (ResultSet rs = stmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        int id = rs.getInt(1);
-
-                        // 4. 返回构建好的用户对象
-                        return new User(id, username);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new ServletException(e);
-        }
-
-        // 如果插入过程中，出现问题，返回 null
-        return null;
+    public String getPassword() {
+        return password;
     }
 
-    // 利用 SHA-256 算法，给密码做 hash 处理
-    public static String encrypted(String password) {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            byte[] input = password.getBytes("UTF-8");
-            byte[] output = messageDigest.digest(input);
-
-            StringBuilder sb = new StringBuilder();
-            for (byte b : output) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return password;
-        }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                ", createTime=" + createTime +
+                '}';
+    }
 }
